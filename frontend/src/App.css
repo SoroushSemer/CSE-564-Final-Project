@@ -1,0 +1,101 @@
+.App {
+  text-align: center;
+  display: grid;
+  grid-template-areas:
+    "header header header header header header header header"
+    "mds mds scatter scatter pie pie bar bar"
+    "mds mds scatter scatter pie pie bar bar"
+    "parallel parallel parallel parallel parallel parallel bar bar"
+    "parallel parallel parallel parallel parallel parallel bar bar"
+    "time time time time time time time time";
+    gap:20px;
+}
+
+.header{
+  grid-area: header;
+  background-color: navy;
+  color: white;
+  height:6vh;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+#mds{
+  grid-area: mds;
+  height: 40vh;
+  margin-left:15px
+}
+
+#scatter{
+  grid-area: scatter;
+  height: 40vh;
+}
+
+#pie{
+  grid-area: pie;
+  height: 40vh;
+}
+
+#bar{
+  grid-area: bar;
+  /* height:79vh; */
+  margin-right: 15px
+}
+
+#parallelcoords{
+  grid-area: parallel;
+  height: 35vh;
+  margin-left:15px
+}
+
+#time{
+  grid-area: time;
+  height: 4vh;
+  margin-left:15px;
+  margin-right: 15px
+}
+
+.panel{
+  padding: 10px;
+  border-radius: 15px;
+  border: 2px solid black;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(61, 97, 82, 0.19); 
+}
+
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

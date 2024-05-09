@@ -49,10 +49,23 @@ export default function BarChart() {
             .attr('d', arc)
             .attr('fill', function (d) { return (color(d.data[0])) })
             .attr("stroke", "black")
-            .style("stroke-width", "2px")
-            .style("opacity", 0.7)
+            .style("stroke-width", (d) => {
+                if (store.gender === d.data[0])
+                    return "4px"
+                else
+                    return "2px"
+            })
+            .style("opacity", (d) => {
+                if (store.gender === d.data[0])
+                    return 1
+                else
+                    return .5
+            })
             .on("click", function (event, d) {
-                store.setGender(d.data[0])
+                if (store.gender === d.data[0])
+                    store.setGender("")
+                else
+                    store.setGender(d.data[0])
             })
 
         svg
@@ -61,11 +74,17 @@ export default function BarChart() {
             .join('text')
             .text(function (d) { return d.data[0] })
             .attr("transform", function (d) { return `translate(${arc.centroid(d)})` })
+            .on("click", function (event, d) {
+                if (store.gender === d.data[0])
+                    store.setGender("")
+                else
+                    store.setGender(d.data[0])
+            })
             .style("text-anchor", "middle")
             .style("font-size", 17)
             .style("font-weight", (d) => {
                 if (d.data[0] === store.gender) {
-                    
+                    return "bold"
                 }
             });
 

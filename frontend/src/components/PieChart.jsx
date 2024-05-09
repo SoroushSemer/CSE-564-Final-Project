@@ -7,8 +7,8 @@ export default function BarChart() {
     let ref = useRef(null);
 
     useEffect(() => {
-        let width = 300
-        let height = 300
+        let width = 250
+        let height = 250
         let margin = 20
         let radius = Math.min(width, height) / 2 - margin
 
@@ -20,11 +20,9 @@ export default function BarChart() {
                 data['female'] += 1
         })
 
-        console.log(Object.entries(data))
-
         const color = d3.scaleOrdinal()
             .domain(["male", "female"])
-            .range(["#9CAF88", "pink"]);
+            .range(["#69b3a2", "pink"]);
 
         const pie = d3.pie()
             .value(d => { return d[1] });
@@ -51,12 +49,14 @@ export default function BarChart() {
             .attr("stroke", "black")
             .style("stroke-width", (d) => {
                 if (store.gender === d.data[0])
-                    return "4px"
+                    return "3px"
                 else
                     return "2px"
             })
             .style("opacity", (d) => {
                 if (store.gender === d.data[0])
+                    return 1
+                else if (store.gender === "")
                     return 1
                 else
                     return .5
@@ -93,10 +93,16 @@ export default function BarChart() {
         }
     })
 
+    const chartStyle = {
+        // display: "flex",
+        // flexDirection: "column",
+        // justifyContent: "center",
+    }
+
     return (
-        <>
-            <h3>Scatter Plot</h3>
+        <div style = {chartStyle}>
+            <h3>Gender Pie Char</h3>
             <div ref={ref} />
-        </>
+        </div>
     )
 }

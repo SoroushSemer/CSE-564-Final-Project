@@ -38,9 +38,12 @@ export default function BarChart() {
         columns = Object.keys(store.payrollData[0]).filter(d => !exclude.includes(d))
     }
 
-    let [attribute, setAttribute] = useState(columns[0]);
+    let [attribute, setAttribute] = useState(null);
 
     useEffect(() => {
+        if (attribute === null)
+            return;
+
         //separate the data by male and female
         let male_data = []
         let female_data = []

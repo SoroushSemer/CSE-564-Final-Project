@@ -6,6 +6,7 @@ import "./App.css";
 import BarChart from "./components/BarChart";
 import PieChart from "./components/PieChart";
 import MDSVariablePlot from "./components/MDSVariablePlot";
+import ScatterPlot from "./components/ScatterPlot";
 
 function App() {
   const { store } = useContext(GlobalStoreContext);
@@ -49,7 +50,8 @@ function App() {
         <MDSVariablePlot />
       </div>
       <div id="scatter" className="panel" style={panelStyle}>
-        <h2>Scatter Plot</h2>
+        {/* <h2>Scatter Plot</h2> */}
+        <ScatterPlot />
       </div>
       <div
         id="pie"

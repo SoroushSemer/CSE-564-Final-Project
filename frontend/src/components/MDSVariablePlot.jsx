@@ -15,7 +15,7 @@ function MDSVariablePlot() {
     // Set dimensions
     const margin = { top: 50, right: 0, bottom: 0, left: 30 };
     const width = 450 - margin.left - margin.right;
-    const height = 360 - margin.top - margin.bottom;
+    const height = 340 - margin.top - margin.bottom;
 
     // const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(clusterIds);
 
@@ -71,8 +71,10 @@ function MDSVariablePlot() {
       .attr("cx", (d) => xScale(d.x))
       .attr("cy", (d) => yScale(d.y))
       .attr("r", 15)
-      .attr("opacity", 0.6)
+      .attr("stroke", (d, i) => d3.schemeCategory10[i % 10])
+      .attr("stroke-width", 2)
       .attr("fill", (d, i) => d3.schemeCategory10[i % 10])
+      .attr("opacity", 0.6)
       .style("cursor", "pointer")
       .on("click", (event, d) => {
         console.log(d.name, " Clicked");

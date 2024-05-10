@@ -68,6 +68,7 @@ function GlobalStoreContextProvider(props) {
   };
 
   store.changePCP = function (columns) {
+    console.log(columns)
     storeReducer({
       type: GlobalStoreActionType.PCP_DISPLAY_COLUMNS,
       payload: columns,

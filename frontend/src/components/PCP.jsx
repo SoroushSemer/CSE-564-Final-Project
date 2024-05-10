@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import GlobalStoreContext from "../store/store";
 
-const categorical = ["Fiscal Year", "Agency Name", "Work Location Borough", "Leave Status as of June 30", "Pay Basis"]
+const categorical = ["Fiscal Year", "Agency Name", "Work Location Borough", "Leave Status as of June 30", "Pay Basis", "Gender"]
 const colors = ["#69b3a2", "pink"]
 
 export default function PCP() {
@@ -11,7 +11,7 @@ export default function PCP() {
 
     let columns = []
     if (store.payrollData.length !== 0) {
-        let exclude = ["Payroll Number", "Last Name", "First Name", "Mid Init", "Title Description", "Gender"]
+        let exclude = ["Payroll Number", "Last Name", "First Name", "Mid Init", "Title Description"]
         columns = Object.keys(store.payrollData[0]).filter(d => !exclude.includes(d))
     }
 
@@ -32,7 +32,16 @@ export default function PCP() {
             })
         }
 
-        let indexedAttrs = columns.map((attr, i) => {
+        let columnsToShow = []
+        if (store.pcp_columns.length == 0){
+            columnsToShow = columns
+        }else{
+            columnsToShow = store.pcp_columns
+        }
+
+        console.log(columnsToShow)
+
+        let indexedAttrs = columnsToShow.map((attr, i) => {
             let type = ""
             if (categorical.includes(attr)){
                 type = "categorical"
@@ -144,7 +153,14 @@ export default function PCP() {
         }
     });
 
+    const resetHandler = () => {
+        store.changePCP([])
+    };
+
     return (
-        <div ref={ref} />
+        <>
+            <div ref={ref} />
+            <button onClick={resetHandler}>Reset</button>
+        </>
     );
 }

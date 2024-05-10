@@ -77,7 +77,9 @@ function MDSVariablePlot() {
       .attr("opacity", 0.6)
       .style("cursor", "pointer")
       .on("click", (event, d) => {
-        console.log(d.name, " Clicked");
+        let columns = store.pcp_columns
+        columns.push(d.name)
+        store.changePCP(columns)
       });
 
     chart
@@ -96,7 +98,9 @@ function MDSVariablePlot() {
       )
       .style("cursor", "pointer")
       .on("click", (event, d) => {
-        console.log(d.name, " Clicked");
+        let columns = store.pcp_columns
+        columns.push(d.name)
+        store.changePCP(columns)
       });
     //   .attr("fill", (d) => colorScale(d.clusterId));
 

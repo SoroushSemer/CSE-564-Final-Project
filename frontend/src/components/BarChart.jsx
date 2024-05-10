@@ -65,22 +65,31 @@ export default function BarChart() {
 
   let [attribute, setAttribute] = useState("");
 
-  useEffect(() => {
-    //separate the data by male and female
-    let male_data = [];
-    let female_data = [];
-    store.payrollData.map((d) => {
-      if (d["Gender"] === "female") female_data.push(d);
-      else if (d["Gender"] === "male") male_data.push(d);
-    });
+    useEffect(() => {
+        if (attribute === null)
+            return;
 
-    if (store.gender === "male") female_data = [];
+        console.log(columns)
 
-    if (store.gender === "female") male_data = [];
+        //separate the data by male and female
+        let male_data = []
+        let female_data = []
+        store.payrollData.map(d => {
+            if (d["Gender"] === "female")
+                female_data.push(d)
+            else if (d["Gender"] === "male")
+                male_data.push(d)
+        })
 
-    const width = 500;
-    const height = 600;
-    const margin = { top: 50, right: 50, bottom: 50, left: 100 };
+        if (store.gender === "male")
+            female_data = []
+
+        if (store.gender === "female")
+            male_data = []
+
+        const width = 500
+        const height = 600
+        const margin = { top: 50, right: 50, bottom: 50, left: 100 };
 
     //check for the type of data
     if (categorical.includes(attribute)) {

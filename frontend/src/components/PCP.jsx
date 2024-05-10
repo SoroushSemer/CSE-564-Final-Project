@@ -1,33 +1,58 @@
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import GlobalStoreContext from "../store/store";
 
-const colors = [
-    "#1f77b4", // blue
-    "#ff7f0e", // orange
-    "#2ca02c", // green
-    "#d62728", // red
-    "#9467bd", // purple
-    "#8c564b", // brown
-    "#e377c2", // pink
-    "#7f7f7f", // gray
-    "#bcbd22", // olive
-    "#17becf"  // teal
-];
+const categorical = ["Fiscal Year", "Agency Name", "Work Location Borough", "Leave Status as of June 30", "Pay Basis"]
+const colors = ["#69b3a2", "pink"]
 
-export default function PCP(props) {
+export default function PCP() {
     let ref = useRef(null);
+    const { store } = useContext(GlobalStoreContext);
+
+    let columns = []
+    if (store.payrollData.length !== 0) {
+        let exclude = ["Payroll Number", "Last Name", "First Name", "Mid Init", "Title Description", "Gender"]
+        columns = Object.keys(store.payrollData[0]).filter(d => !exclude.includes(d))
+    }
 
     useEffect(() => {
-        let indexedAttrs = props.pcpAttributes.map((attr, i) => {
-            attr['index'] = i
-            return attr
+        let splicedPayroll = store.payrollData.splice(0, 1500)
+
+        if(store.gender == "male"){
+            splicedPayroll = splicedPayroll.filter((d) => {
+                if (d["Gender"] == "male"){
+                    return true
+                }
+            })
+        }else if (store.gender == "female") {
+            splicedPayroll = splicedPayroll.filter((d) => {
+                if (d["Gender"] == "female"){
+                    return true
+                }
+            })
+        }
+
+        let indexedAttrs = columns.map((attr, i) => {
+            let type = ""
+            if (categorical.includes(attr)){
+                type = "categorical"
+            }else{
+                type = "numerical"
+            }
+            let newAttr = {
+                name: attr,
+                type: type,
+                index: i
+            }
+            return newAttr
         })
 
-        console.log(indexedAttrs)
+        const pWidth = 800
+        const pHeight = 500
 
         let margin = { top: 30, right: 10, bottom: 10, left: 0 };
-        const width = props.width - margin.left - margin.right;
-        const height = props.height - margin.top - margin.bottom;
+        const width = pWidth - margin.left - margin.right;
+        const height = pHeight - margin.top - margin.bottom;
 
         //create the Y axis scales
         let y = {}
@@ -35,7 +60,7 @@ export default function PCP(props) {
             if (attr.type === 'categorical') {
                 //find all categories
                 const domain = new Set();
-                props.data.forEach(item => domain.add(item[attr.name]))
+                splicedPayroll.forEach(item => domain.add(item[attr.name]))
 
                 //create band scaling
                 y[attr.name] = d3.scaleBand()
@@ -44,7 +69,7 @@ export default function PCP(props) {
             } else {
                 //create numerical scaling
                 y[attr.name] = d3.scaleLinear()
-                    .domain(d3.extent(props.data, function (d) { return +d[attr.name]; }))
+                    .domain(d3.extent(splicedPayroll, function (d) { return +d[attr.name]; }))
                     .range([0, height])
             }
         })
@@ -62,18 +87,24 @@ export default function PCP(props) {
 
         const svg = d3.select(ref.current)
             .append("svg")
-            .attr("width", props.width)
-            .attr("height", props.height)
+            .attr("width", pWidth)
+            .attr("height", pHeight)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         svg.selectAll("path")
-            .data(props.data)
+            .data(splicedPayroll)
             .enter()
             .append("path")
             .attr('d', path)
             .style('fill', 'none')
-            .style('stroke', (d, i) => colors[props.labels[i]])
+            .style('stroke', (d, i) => {
+                if (d["Gender"] == "male") 
+                    return colors[0]
+                else if (d["Gender"] == "female") {
+                    return colors[1]
+                }
+            })
             .style("opacity", 0.5)
 
         svg.selectAll("Axis")
@@ -87,19 +118,19 @@ export default function PCP(props) {
                     d3.select(this).attr('fill', 'orange')
                 })
                 .on('drag', function(event){
-                    const newX = Math.min(Math.max(0, event.x), props.width);
+                    const newX = Math.min(Math.max(0, event.x), pWidth);
                     d3.select(this).attr('transform', `translate(${newX})`);
 
                 })
                 .on('end', function(event, d) {
-                    const newX = Math.min(Math.max(0, event.x), props.width);
+                    const newX = Math.min(Math.max(0, event.x), pWidth);
 
-                    const draggedIndex = Math.round(newX / (props.width / indexedAttrs.length));
+                    const draggedIndex = Math.round(newX / (pWidth / indexedAttrs.length));
                     const updatedPcpAttributes = [...indexedAttrs];
                     const draggedItem = updatedPcpAttributes.splice(d.index, 1)[0];
                     updatedPcpAttributes.splice(draggedIndex, 0, draggedItem);
 
-                    props.handleAxisChange(updatedPcpAttributes)
+                    store.changePCP(updatedPcpAttributes)
                 }))
             .append("text")
                 .style("text-anchor", "middle")

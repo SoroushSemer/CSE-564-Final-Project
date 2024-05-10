@@ -63,9 +63,9 @@ function App() {
       <div id="bar" className="panel" style={panelStyle}>
         <BarChart />
       </div>
-      <div id="time" className="panel" style={panelStyle}>
+      {/* <div id="time" className="panel" style={panelStyle}>
         <h2>Time </h2>
-      </div>
+      </div> */}
       <div id="parallelcoords" className="panel" style={panelStyle}>
         <h2>Parallel Coordinates Plot</h2>
       </div>

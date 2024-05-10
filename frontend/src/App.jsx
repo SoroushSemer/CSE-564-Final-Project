@@ -7,6 +7,7 @@ import BarChart from "./components/BarChart";
 import PieChart from "./components/PieChart";
 import MDSVariablePlot from "./components/MDSVariablePlot";
 import ScatterPlot from "./components/ScatterPlot";
+import PCP from "./components/PCP";
 
 function App() {
   const { store } = useContext(GlobalStoreContext);
@@ -67,7 +68,7 @@ function App() {
         <h2>Time </h2>
       </div>
       <div id="parallelcoords" className="panel" style={panelStyle}>
-        <h2>Parallel Coordinates Plot</h2>
+        <PCP/>
       </div>
     </div>
   );

@@ -44,6 +44,8 @@ export default function BarChart() {
         if (attribute === null)
             return;
 
+        console.log(columns)
+
         //separate the data by male and female
         let male_data = []
         let female_data = []

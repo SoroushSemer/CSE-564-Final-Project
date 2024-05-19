@@ -14,8 +14,8 @@ function MDSVariablePlot() {
 
     // Set dimensions
     const margin = { top: 50, right: 0, bottom: 0, left: 30 };
-    const width = 450 - margin.left - margin.right;
-    const height = 340 - margin.top - margin.bottom;
+    const width = 430 - margin.left - margin.right;
+    const height = 380 - margin.top - margin.bottom;
 
     // const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(clusterIds);
 
@@ -77,9 +77,9 @@ function MDSVariablePlot() {
       .attr("opacity", 0.6)
       .style("cursor", "pointer")
       .on("click", (event, d) => {
-        let columns = store.pcp_columns
-        columns.push(d.name)
-        store.changePCP(columns)
+        let columns = store.pcp_columns;
+        columns.push(d.name);
+        store.changePCP(columns);
       });
 
     chart
@@ -98,9 +98,9 @@ function MDSVariablePlot() {
       )
       .style("cursor", "pointer")
       .on("click", (event, d) => {
-        let columns = store.pcp_columns
-        columns.push(d.name)
-        store.changePCP(columns)
+        let columns = store.pcp_columns;
+        columns.push(d.name);
+        store.changePCP(columns);
       });
     //   .attr("fill", (d) => colorScale(d.clusterId));
 
@@ -147,7 +147,7 @@ function MDSVariablePlot() {
       .attr("font-size", 12)
       .attr("font-weight", "bold")
       .attr("y", 20)
-      .attr("x", -height / 2)
+      .attr("x", -height / 2 - 50)
       .attr("transform", `rotate(-90)`)
       .text("MDS Dim. 2");
 

@@ -65,31 +65,26 @@ export default function BarChart() {
 
   let [attribute, setAttribute] = useState("");
 
-    useEffect(() => {
-        if (attribute === null)
-            return;
+  useEffect(() => {
+    if (attribute === null) return;
 
-        console.log(columns)
+    console.log(columns);
 
-        //separate the data by male and female
-        let male_data = []
-        let female_data = []
-        store.payrollData.map(d => {
-            if (d["Gender"] === "female")
-                female_data.push(d)
-            else if (d["Gender"] === "male")
-                male_data.push(d)
-        })
+    //separate the data by male and female
+    let male_data = [];
+    let female_data = [];
+    store.payrollData.map((d) => {
+      if (d["Gender"] === "female") female_data.push(d);
+      else if (d["Gender"] === "male") male_data.push(d);
+    });
 
-        if (store.gender === "male")
-            female_data = []
+    if (store.gender === "male") female_data = [];
 
-        if (store.gender === "female")
-            male_data = []
+    if (store.gender === "female") male_data = [];
 
-        const width = 500
-        const height = 600
-        const margin = { top: 50, right: 50, bottom: 50, left: 100 };
+    const width = 500;
+    const height = 800;
+    const margin = { top: 50, right: 20, bottom: 50, left: 120 };
 
     //check for the type of data
     if (categorical.includes(attribute)) {
@@ -115,14 +110,15 @@ export default function BarChart() {
       );
 
       const bardata = Object.keys(domain).map((key) => ({
-        key,
+        key: key.length > 18 ? key.substring(0, 16) + "..." : key,
         count: domain[key],
       }));
 
       console.log(bardata);
+      let maxval = d3.max(bardata, (d) => d.count["male"] + d.count["female"]);
 
-      const xDomain = [0, 40000];
-      const yDomain = Object.keys(domain);
+      const xDomain = [0, maxval];
+      const yDomain = bardata.map((d) => d.key);
 
       const xScale = d3.scaleLinear(xDomain, [
         margin.left,
@@ -169,7 +165,9 @@ export default function BarChart() {
         .attr("width", (d) => xScale(d.count["male"]) - margin.left)
         .attr("height", (d) => yScale.bandwidth())
         .attr("fill", "#69b3a2")
-        .style("opacity", 0.7);
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .style("opacity", 0.9);
 
       svg
         .append("g")
@@ -181,7 +179,9 @@ export default function BarChart() {
         .attr("width", (d, i) => xScale(d.count["female"]) - margin.left)
         .attr("height", (d) => yScale.bandwidth())
         .attr("fill", "pink")
-        .style("opacity", 0.7);
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .style("opacity", 0.9);
 
       svg
         .append("text")
@@ -305,6 +305,7 @@ export default function BarChart() {
         .attr("class", "x-axis-label")
         .attr("x", width / 2)
         .attr("y", height - 10)
+        .style("font-weight", "bold")
         .text("Frequency of people");
       svg
         .append("text")
@@ -312,6 +313,7 @@ export default function BarChart() {
         .attr("transform", "rotate(-90)")
         .attr("x", -height / 2 - attribute.length * 5)
         .attr("y", 20)
+        .style("font-weight", "bold")
         .text(attribute);
     }
 
@@ -326,25 +328,36 @@ export default function BarChart() {
 
   return (
     <>
-      <label>{attribute} vs. Frequency</label>
-      <div ref={ref} />
-      <label htmlFor="var1_dropdown">Select Attribute: </label>
-      <select
-        id="var1_dropdown"
-        defaultValue={attribute}
-        onChange={handleAttributeChange}
-      >
-        <option value={null} disabled>
-          -- Please select --
-        </option>
-        {columns.map((menuItem, i) => {
-          return (
-            <option key={i} value={menuItem}>
-              {menuItem}
-            </option>
-          );
-        })}
-      </select>
+      <h2 style={{ width: "100%", textAlign: "center" }}>
+        <select
+          id="var1_dropdown"
+          defaultValue={attribute}
+          onChange={handleAttributeChange}
+          style={{
+            height: "30px",
+            backgroundColor: "rgba(0,0,0,0)",
+            fontSize: "24px",
+            width: attribute.length * 17 + "px",
+            minWidth: "100px",
+            maxWidth: "300px",
+            fontWeight: "bold",
+            border: "none",
+          }}
+        >
+          <option value={null} disabled>
+            -- Please select --
+          </option>
+          {columns.map((menuItem, i) => {
+            return (
+              <option key={i} value={menuItem}>
+                {menuItem}
+              </option>
+            );
+          })}
+        </select>
+        <label> vs. Frequency</label>
+      </h2>
+      <div ref={ref} width={800} />
     </>
   );
 }

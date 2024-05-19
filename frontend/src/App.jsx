@@ -45,7 +45,9 @@ function App() {
   return (
     <div className="App" style={{ textAlign: "start" }}>
       <div className="header" style={{ background: headerColor }}>
-        <h3>NYC Payroll Analytics Dashboard</h3>
+        <h3 style={{ textAlign: "center", width: "100%" }}>
+          NYC Payroll Gender Analytics Dashboard
+        </h3>
       </div>
       <div id="mds" className="panel" style={panelStyle}>
         <MDSVariablePlot />
@@ -68,7 +70,7 @@ function App() {
         <h2>Time </h2>
       </div> */}
       <div id="parallelcoords" className="panel" style={panelStyle}>
-        <PCP/>
+        <PCP />
       </div>
     </div>
   );

@@ -96,7 +96,7 @@ function ScatterPlot() {
     var color = d3
       .scaleOrdinal()
       .domain(["male", "female"])
-      .range(["#00aaff", "#ff0077"]);
+      .range(["#69b3a2", "pink"]);
 
     // Add dots
     var myCircle = svg
@@ -115,7 +115,9 @@ function ScatterPlot() {
       .style("fill", function (d) {
         return color(d["Gender"]);
       })
-      .style("opacity", 0.5);
+      .style("stroke", "black")
+      .style("stroke-width", 0.5)
+      .style("opacity", 0.9);
 
     // Add brushing
     svg.call(
@@ -192,9 +194,7 @@ function ScatterPlot() {
   console.log(loading);
   return (
     <div style={{ width: "100%", height: "100%", marginTop: "50px" }}>
-      <h2 style={{ position: "absolute", top: "7%", left: "33%" }}>
-        Scatter Plot
-      </h2>
+      <h2 style={{ position: "absolute", top: 80, left: 690 }}>Scatter Plot</h2>
       {loading ? (
         <div style={{ width: "100%", height: "100%" }}></div>
       ) : (
